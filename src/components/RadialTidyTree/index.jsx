@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { csvParse } from 'd3-dsv';
 import { linkRadial } from 'd3-shape';
-import { stratify, tree } from 'd3-hierarchy';
+import { stratify as makeStratify, tree as makeTree } from 'd3-hierarchy';
 
 import './style.css';
 
@@ -12,6 +12,13 @@ function radialPoint(x, y) {
     y * Math.sin(x - (Math.PI / 2)),
   ];
 }
+
+const tree = makeTree()
+  .size([2 * Math.PI, 500])
+  .separation((a, b) => (a.parent === b.parent ? 1 : 2) / a.depth);
+
+const stratify = makeStratify()
+  .parentId(d => d.id.substring(0, d.id.lastIndexOf('.')));
 
 export default class RadialTidyTree extends Component {
   constructor(props) {
@@ -26,14 +33,7 @@ export default class RadialTidyTree extends Component {
   async componentWillMount() {
     const csv = csvParse(await import('./flare.csv'));
 
-    const root = tree()
-      .size([2 * Math.PI, 500])
-      .separation((a, b) => (a.parent === b.parent ? 1 : 2) / a.depth)(
-        stratify()
-          .parentId(d => d.id.substring(0, d.id.lastIndexOf('.')))(
-            csv,
-          ),
-      );
+    const root = tree(stratify(csv));
 
     this.setState({
       links: root.links(),
