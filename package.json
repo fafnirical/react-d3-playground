@@ -8,6 +8,7 @@
     "start": "webpack-dev-server --inline --open"
   },
   "dependencies": {
+    "babel-runtime": "^6.23.0",
     "d3-dsv": "^1.0.5",
     "d3-hierarchy": "^1.1.4",
     "d3-shape": "^1.2.0",
@@ -20,6 +21,7 @@
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.0.0",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.5.0",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.1",
